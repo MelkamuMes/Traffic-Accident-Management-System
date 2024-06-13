@@ -1,0 +1,282 @@
+
+CREATE TABLE users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50),
+    password VARCHAR(100), -- Assuming hashed password length
+    usertype ENUM('Admin', 'TrafficPolice', 'FinancialWorker'),
+  
+);
+
+-- Create Driver Table
+CREATE TABLE Drivers (
+    DriverID INT PRIMARY KEY AUTO_INCREMENT,
+    DriverName VARCHAR(150),
+    DriverLicenseNumber VARCHAR(50)
+);
+
+-- Create Accidents Table
+CREATE TABLE Accidents (
+    AccidentID INT PRIMARY KEY AUTO_INCREMENT,
+    LocationPoint VARCHAR(150), -- assuming a spatial database for storing latitude and longitude
+    Time DATETIME,
+    Description TEXT,
+    DriverID INT,
+    InvestigatingOfficerUserID INT,
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID),
+    FOREIGN KEY (InvestigatingOfficerUserID) REFERENCES Users(UserID)
+);
+
+-- Create Violations Table
+CREATE TABLE Violations (
+    ViolationID INT PRIMARY KEY AUTO_INCREMENT,
+    AccidentID INT,
+    OffenceDate DATETIME,
+    EXpiryDate DATETIME,
+    PenaltyAmount DECIMAL(10, 2),
+    Status ENUM('Pending', 'Paid'),
+    Description TEXT,
+    DriverID INT,
+    FOREIGN KEY (AccidentID) REFERENCES Accidents(AccidentID),
+    FOREIGN KEY (DriverID) REFERENCES Drivers(DriverID)
+);
+
+-- Create Traffic Table
+CREATE TABLE Traffic (
+    TrafficID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    firstName VARCHAR(50),
+    middleName VARCHAR(50),
+    lastName VARCHAR(50),
+   ID_Number VARCHAR(50),
+    Email VARCHAR(150),
+    phone_number INT,
+    Status ENUM('Active', 'Inactive'),
+    Entry_Year date,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- Create Payments Table
+CREATE TABLE Payments (
+    PaymentID INT PRIMARY KEY AUTO_INCREMENT,
+    ViolationID INT,
+    AmountPaid DECIMAL(10, 2),
+    PaymentMethod VARCHAR(50),
+    PaymentDate DATE,
+    ProcessedByUserID INT,
+    FOREIGN KEY (ViolationID) REFERENCES Violations(ViolationID),
+    FOREIGN KEY (ProcessedByUserID) REFERENCES Users(UserID)
+);
+
+-- Create Reports Table
+CREATE TABLE Reports (
+    ReportID INT PRIMARY KEY AUTO_INCREMENT,
+    Type ENUM('Accident', 'Violation'),
+    Details TEXT,
+    Date DATE
+);
+
+-- Create FinancialWorkers Table
+CREATE TABLE FinancialWorkers (
+    FinancialWorkerID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    firstName VARCHAR(50),
+    middleName VARCHAR(50),
+    lastName VARCHAR(50),
+    ID_Number VARCHAR(50),
+    Email VARCHAR(150),
+    phone_number INT,
+    Status ENUM('Active', 'Inactive'),
+    Entry_Year date,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+
+
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (UserID, Username, Password, UserType, Name, ContactInformation)
+VALUES
+(1, 'admin_user', 'hashed_admin_password', 'Admin', 'Thomas Andre', 'admin@example.com'),
+(2, 'police_user', 'hashed_police_password', 'TrafficPolice', 'Ayele seleshi', 'police@example.com'),
+(3, 'finance_user', 'hashed_finance_password', 'FinancialWorker', 'Betelhem Awel', 'finance@example.com'),
+(4, 'driver_user', 'hashed_driver_password', 'Driver', 'Mitku lema', 'driver@example.com');
+
+-- Insert sample data into Driver table
+INSERT INTO Drivers (DriverID, UserID, DriverLicenseNumber, Status)
+VALUES
+(1, 4, 'DL123456', 'Active'),
+(2, 4, 'DL654321', 'Active');
+
+-- Insert sample data into Traffic table
+INSERT INTO Traffic (TrafficID, UserID, Status)
+VALUES
+(1, 2, 'Active');
+
+-- Insert sample data into FinancialWorkers table
+INSERT INTO FinancialWorkers (FinancialWorkerID, UserID, Status)
+VALUES
+(1, 3, 'Active');
+
+-- Insert sample data into Accidents table
+INSERT INTO Accidents (AccidentID, LocationPoint, Time,  Description, InvestigatingOfficerUserID)
+VALUES
+(1, POINT(40.7128, -74.0060), '2024-04-09 13:00:00',  'Car collision at intersection', 2),
+(2, POINT(34.0522, -118.2437), '2024-04-08 15:30:00',  'Pedestrian hit by a car', 2);
+
+-- Insert sample data into Violations table
+INSERT INTO Violations(ViolationID, AccidentID, Description, PenaltyAmount, DriverID)
+VALUES
+(1, 1, 'Speeding', 100.00,  1),
+(2, null, 'Running red light', 150.00,  2);
+
+-- Insert sample data into Payments table
+INSERT INTO Payments (PaymentID, ViolationID, AmountPaid, PaymentMethod, PaymentDate, ProcessedByUserID)
+VALUES
+(1, 1, 100.00, 'Credit Card', '2024-04-09', 3),
+(2, 2, 150.00, 'Cash', '2024-04-08', 3);
+
+-- Insert sample data into Reports table
+INSERT INTO Reports (ReportID, Type, Details, Date)
+VALUES
+(1, 'Accident', 'Car collision at intersection', '2024-04-09'),
+(2, 'Violation', 'Speeding violation', '2024-04-09');
+
+
+
+-- failed to open the referenced table drivers
+
+
+
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (UserID, Username, Password, UserType, Name, ContactInformation)
+VALUES
+(1, 'admin_user', 'hashed_admin_password', 'Admin', 'Thomas Andre', 'admin@example.com'),
+(2, 'police_user', 'hashed_police_password', 'TrafficPolice', 'Ayele Seleshi', 'police@example.com'),
+(3, 'finance_user', 'hashed_finance_password', 'FinancialWorker', 'Betelhem Awel', 'finance@example.com'),
+(4, 'driver_user', 'hashed_driver_password', 'Driver', 'Mitku Lema', 'driver@example.com');
+
+-- Insert sample data into Drivers table
+INSERT INTO Drivers (DriverID, UserID, DriverLicenseNumber, Status)
+VALUES
+(1, 4, 'DL123456', 'Active'),
+(2, 4, 'DL654321', 'Active');
+
+-- Insert sample data into Accidents table
+INSERT INTO Accidents (AccidentID, LocationPoint, Time, ReportedByUserID, Description, InvestigatingOfficerUserID)
+VALUES
+(1, POINT(40.7128, -74.0060), '2024-04-09 13:00:00', 2, 'Car collision at intersection', 2),
+(2, POINT(34.0522, -118.2437), '2024-04-08 15:30:00', 3, 'Pedestrian hit by a car', 2);
+
+-- Insert sample data into Violations table
+INSERT INTO Violations(ViolationID, AccidentID, Description, PenaltyAmount, IssuedByUserID, DriverID)
+VALUES
+(1, 1, 'Speeding', 100.00, 2, 1),
+(2, null, 'Running red light', 150.00, 2, 2);
+
+-- Insert sample dataApologies for the incomplete response. Here's the continuation of the SQL code:
+
+```sql
+-- Insert sample data into Payments table
+Updated
+
+INSERT INTO Payments (PaymentID, ViolationID, AmountPaid, PaymentMethod, PaymentDate, ProcessedByUserID)
+VALUES
+(1, 1, 100.00, 'Credit Card', '2024-04-09', 3),
+(2, 2, 150.00, 'Cash', '2024-04-08', 3);
+
+-- Insert sample data into Reports table
+INSERT INTO Reports (ReportID, Type, Details, Date)
+VALUES
+(1, 'Accident', 'Car collision at intersection', '2024-04-09'),
+(2, 'Violation', 'Speeding violation', '2024-04-09');
+
+-- Create FinancialWorkers Table
+CREATE TABLE FinancialWorkers (
+    FinancialWorkerID INT PRIMARY KEY,
+    UserID INT,
+    Status ENUM('Active', 'Inactive'),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- Insert sample data into FinancialWorkers table
+INSERT INTO FinancialWorkers (FinancialWorkerID, UserID, Status)
+VALUES
+(1, 3, 'Active');
+
+
+
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (Username, Password, UserType, Name, ContactInformation)
+VALUES
+( 'police_user', '112', 'TrafficPolice', 'Abdiqadir Ahmed', 'officerAbdiqadir@example.com'),
+( 'police_user', '113', 'TrafficPolice', 'Sara Bekele', 'officerSara@example.com'),
+( 'police_user', '114', 'TrafficPolice', 'Yohannes Desta', 'officerDesta@example.com'),
+( 'police_user', '115', 'TrafficPolice', 'Mohammed Hailu', 'officerMohammed@example.com'),
+( 'police_user', '116', 'TrafficPolice', 'Nebiyu Negash', 'officerNebiyu@example.com'),
+( 'police_user', '117', 'TrafficPolice', 'Eyob Yimer', 'officerYimer@example.com'),
+( 'police_user', '118', 'TrafficPolice', 'Tewodros Lemma', 'officerTewodros@example.com'),
+( 'police_user', '119', 'TrafficPolice', 'Mulugeta Assefa', 'officerMulugeta@example.com'),
+( 'police_user', '1110', 'TrafficPolice', 'Nardos Abera', 'officerNardos@example.com');
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (Username, Password, UserType, Name, ContactInformation)
+VALUES
+( 'Finance_user', '112', 'FinancialWorker', 'Abiyot Tadesse', 'financeAbiyot@example.com'),
+( 'Finance_user', '113', 'FinancialWorker', 'Liya Gebremariam', 'financeLiya@example.com'),
+( 'Finance_user', '114', 'FinancialWorker', 'Selamawit Assefa', 'financeSelamawit@example.com'),
+( 'Finance_user', '115', 'FinancialWorker', 'Tewodros Alemu', 'financeTewodros@example.com'),
+( 'Finance_user', '116', 'FinancialWorker', 'Bethlehem Hailemariam', 'financeBethlehem@example.com'),
+( 'Finance_user', '117', 'FinancialWorker', 'Dawit Mekonnen', 'financeDawit@example.com'),
+( 'Finance_user', '118', 'FinancialWorker', 'Rahel Negash', 'financeRahel@example.com'),
+( 'Finance_user', '119', 'FinancialWorker', 'Zeritu Ambaye', 'financeZeritu@example.com'),
+( 'Finance_user', '1110', 'FinancialWorker', 'Meseret Girma', 'financeMeseret@example.com');
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (Username, Password, UserType, Name, ContactInformation)
+VALUES
+( 'Admin_user', '112', 'Admin', 'Alemayehu Kebede', 'AdminAbiyot@example.com'),
+( 'Admin_user', '113', 'Admin', 'Genet Wolde', 'AdminLiya@example.com'),
+( 'Admin_user', '114', 'Admin', 'Tadesse Alemu', 'AdminTadesse@example.com'),
+( 'Admin_user', '115', 'Admin', 'Fikru Assefa', 'AdminFikru@example.com');
+
+
+
+
+
+-- Insert sample data into Users table
+INSERT INTO Users (Username, Password, UserType, Name, ContactInformation)
+VALUES
+( 'Admin_user', '112', 'Admin', 'Alemayehu Kebede', 'AdminAbiyot@example.com'),
+( 'Admin_user', '113', 'Admin', 'Genet Wolde', 'AdminLiya@example.com'),
+( 'Admin_user', '114', 'Admin', 'Tadesse Alemu', 'AdminTadesse@example.com'),
+( 'Admin_user', '115', 'Admin', 'Fikru Assefa', 'AdminFikru@example.com'),
+( 'police_user', '112', 'TrafficPolice', 'Abdiqadir Ahmed', 'officerAbdiqadir@example.com'),
+( 'police_user', '113', 'TrafficPolice', 'Sara Bekele', 'officerSara@example.com'),
+( 'police_user', '114', 'TrafficPolice', 'Yohannes Desta', 'officerDesta@example.com'),
+( 'police_user', '115', 'TrafficPolice', 'Mohammed Hailu', 'officerMohammed@example.com'),
+( 'police_user', '116', 'TrafficPolice', 'Nebiyu Negash', 'officerNebiyu@example.com'),
+( 'police_user', '117', 'TrafficPolice', 'Eyob Yimer', 'officerYimer@example.com'),
+( 'police_user', '118', 'TrafficPolice', 'Tewodros Lemma', 'officerTewodros@example.com'),
+( 'police_user', '119', 'TrafficPolice', 'Mulugeta Assefa', 'officerMulugeta@example.com'),
+( 'police_user', '1110', 'TrafficPolice', 'Nardos Abera', 'officerNardos@example.com'),
+( 'Finance_user', '112', 'FinancialWorker', 'Abiyot Tadesse', 'financeAbiyot@example.com'),
+( 'Finance_user', '113', 'FinancialWorker', 'Liya Gebremariam', 'financeLiya@example.com'),
+( 'Finance_user', '114', 'FinancialWorker', 'Selamawit Assefa', 'financeSelamawit@example.com'),
+( 'Finance_user', '115', 'FinancialWorker', 'Tewodros Alemu', 'financeTewodros@example.com'),
+( 'Finance_user', '116', 'FinancialWorker', 'Bethlehem Hailemariam', 'financeBethlehem@example.com'),
+( 'Finance_user', '117', 'FinancialWorker', 'Dawit Mekonnen', 'financeDawit@example.com'),
+( 'Finance_user', '118', 'FinancialWorker', 'Rahel Negash', 'financeRahel@example.com'),
+( 'Finance_user', '119', 'FinancialWorker', 'Zeritu Ambaye', 'financeZeritu@example.com'),
+( 'Finance_user', '1110', 'FinancialWorker', 'Meseret Girma', 'financeMeseret@example.com');
+
+
+
+
+

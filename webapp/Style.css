@@ -1,0 +1,172 @@
+@charset "ISO-8859-1";
+
+@charset "ISO-8859-1";
+
+/*
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.377),rgba(255, 255, 255, 0.301)), url(../img/heavy-traffic-2022-11-01-09-26-41-utc-scaled.jpg);
+    background-size:cover;
+    }
+
+
+.Rbody {
+	position: relative;
+    left: 30%;
+	top:20vh;
+}
+li {
+		list-style:none;
+}
+ a {
+	color:#000;
+}
+
+input {
+	position: relative;
+	display: inline-block;
+	align-items: center;
+	border: 1px solid #ccc;
+	padding: 10px 14px;
+
+}
+
+.btn {
+	cursor:pointer;
+	padding: 10px 20px;
+	margin: 40px;
+	background-color: black;
+	color: #fff;
+}
+
+ .All_form{
+    
+    padding-left:4rem;
+    width:50vw;
+ }
+ .container button {
+    display:block;
+    background-color:black;
+    color:aliceblue;
+    margin:20px 40px;
+    padding: 15px 180px;
+    width: 100%;
+}
+
+.container button:hover{
+    background-color:rgb(49, 49, 49);
+}
+.container button a{
+    color:aliceblue;
+}
+ 
+.img {
+    position:relative;
+    contain:content;
+    margin:20px 40px;
+    width: 100%;
+
+} 
+
+img {
+    width:500px;
+    height:300px;
+}
+
+ .All_form h2 {
+    margin-top:10px;
+    line-height:2rem;
+    font-size:34px;
+ }
+
+ .form-group {
+    
+    width: 100%;
+    padding: 0rem 4rem;
+ }
+
+ .form-group label {
+    display:block;
+    padding: 8px 5px;
+    color: rgba(37, 36, 36, 0.829);
+    font-weight: bold;
+ }
+ .form-group input {
+   padding: 5px 40px;
+   border: 1px solid #756f6f;
+ }
+ #main_select {
+    width: 150px;
+    height: auto;
+    padding: .8rem 0;
+    margin: 1rem 3rem ;
+    margin-left: 5rem;
+    color:aliceblue;
+    background-color:#302b2b;
+}
+
+.punish_btn {
+    font-size: 20px;
+    font-weight: medium;
+    margin: 10px 40px;
+    padding: 15px 120px;
+    color:aliceblue;
+    background-color:black;
+    cursor:pointer;
+}
+
+#Himg a {
+    position: relative;
+    contain: content;
+    width: 10px;
+    height: 10px;
+
+}
+*/
+ 
+ 
+/* navigation css start  */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+     background-color: #000;
+}
+
+.navigation {
+	position:relative;
+	left:50%;
+	border:2px solid red;
+	margin: 5px;
+	padding: 5px;
+}
+
+nav{
+	position: relative;
+	
+}
+
+li{
+	display: flex;
+}
+
+a{
+	margin: 5px;
+	padding:5px;
+}
+
+.navigation img{
+	width: 100px;
+	height: 100px;
+}
+/*navigatiion css end*/
